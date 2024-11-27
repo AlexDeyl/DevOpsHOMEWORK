@@ -1,0 +1,44 @@
+Last login: Wed Nov 27 12:57:48 2024 from 85.195.100.238
+[root@MyServer ~]# curl -s ifconfig.me
+93.183.73.38[root@MyServer ~]# mkfifo my_pipe
+[root@MyServer ~]# ss -plnt > my_pipe &
+[1] 60046
+[root@MyServer ~]# cat my_pipe > ss_output.txt
+[1]+  Done                    ss -plnt > my_pipe
+[root@MyServer ~]#
+[root@MyServer ~]# mkfifo my_pipe
+mkfifo: cannot create fifo 'my_pipe': File exists
+[root@MyServer ~]# cat my_pipe > ss_output.txt &
+[1] 60053
+[root@MyServer ~]# ss -plnt > my_pipe
+[1]+  Done                    cat my_pipe > ss_output.txt
+[root@MyServer ~]# cat ss_output.txt
+State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess                
+LISTEN 0      128          0.0.0.0:22        0.0.0.0:*    users:(("sshd",pid=1094,fd=3))
+LISTEN 0      244        127.0.0.1:5432      0.0.0.0:*    users:(("postmaster",pid=1131,fd=6))
+LISTEN 0      511          0.0.0.0:80        0.0.0.0:*    users:(("nginx",pid=1155,fd=6),("nginx",pid=1154,fd=6))
+[root@MyServer ~]# mkfifo log_pipe
+[root@MyServer ~]# cat /var/log/messages > log_pipe &
+[1] 60058
+[root@MyServer ~]# tar -cf log_archive.tar - < log_pipe
+tar: -: Cannot stat: No such file or directory
+tar: Exiting with failure status due to previous errors
+[1]+  Done                    cat /var/log/messages > log_pipe
+[root@MyServer ~]# [root@MyServer ~]# tar -cf log_archive.tar - < log_pipe
+[root@MyServer ~]# [root@MyServer ~]# tar -cf log_archive.tar - < log_pipe
+[root@MyServer ~]# cat /var/log/messages > log_pipe &
+[1] 60061
+[root@MyServer ~]# tar -cf log_archive.tar log_pipe
+[root@MyServer ~]# tar -tf log_archive.tar
+log_pipe
+[root@MyServer ~]# date +%s
+1732715003
+[root@MyServer ~]# echo "$(date '+%Y-%m-%d %H:%M:%S')" | awk '{print $1}'
+2024-11-27
+[root@MyServer ~]# cat << EOF > message.txt
+> Привет! Это многострочное сообщение.
+> Оно создано с использованием HEREDOC.
+> EOF
+[root@MyServer ~]# uname -r
+5.4.17-2136.336.5.1.el8uek.x86_64
+[root@MyServer ~]#
